@@ -15,7 +15,6 @@
             display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
         }
 
-        /* Capa de Red Neuronal */
         #neural-bg { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.15; pointer-events: none; }
 
         .muro-obsolescencia {
@@ -44,14 +43,10 @@
 
         .node-box {
             background: rgba(255,255,255,0.02); border: 1px solid #222;
-            padding: 20px; border-radius: 12px; position: relative; transition: 0.3s;
+            padding: 20px; border-radius: 12px; position: relative;
         }
-        .node-box:hover { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
-        .node-box h3 { color: var(--neon-gold); margin-top: 0; font-size: 0.9rem; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
         .stat-val { font-size: 2.2rem; font-weight: bold; margin: 10px 0; color: #fff; }
-
-        .cae-registry { height: 100px; overflow-y: auto; font-size: 0.7rem; color: var(--neon-green); margin-top: 10px; background: #000; padding: 5px; }
 
         .btn-action {
             width: 100%; padding: 15px; background: var(--neon-gold); color: #000;
@@ -60,17 +55,10 @@
         }
         .btn-action:hover { background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
 
-        .tribute-log { height: 100px; font-size: 0.7rem; color: #aaa; overflow-y: auto; border: 1px solid #222; padding: 5px; background: #050505; }
-
         .system-logs {
             width: 100%; height: 120px; background: #000; border: 1px solid var(--neon-gold);
             margin-top: 25px; padding: 15px; font-size: 0.75rem; color: var(--neon-gold); overflow-y: auto; box-sizing: border-box;
         }
-
-        .audit-tag { font-size: 0.6rem; color: var(--purify); float: right; }
-
-        @keyframes scan { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
-        .scanning { animation: scan 2s infinite; }
     </style>
 </head>
 <body>
@@ -78,125 +66,74 @@
     <canvas id="neural-bg"></canvas>
 
     <div class="muro-obsolescencia">
-        <span class="audit-tag">PROTOCOLO JACOB-ALPHA ACTIVO</span>
         <h2 style="margin:0; font-size: 1rem; color: var(--emet-fire);">MURO DE OBSOLESCENCIA DIMENSIONAL</h2>
-        <p style="font-size: 0.7rem; margin: 5px 0;">ACCESO EXTERNO BLOQUEADO | SELLO EMET אמת VALIDADO</p>
+        <p style="font-size: 0.7rem; margin: 5px 0;">SELLO EMET אמת VALIDADO</p>
     </div>
 
     <div class="core-container">
         <div class="header-soberano">
             <h1 style="margin: 0; color: var(--neon-gold); letter-spacing: 10px;">AMENKI® HUB</h1>
             <div class="mantra">UAGNARAT RUTNOT NANRATENRAT NATIMAY</div>
-            <p style="font-size: 0.7rem; margin-top: 10px; opacity: 0.7;">FIRMA ENERGÉTICA SOBERANA - VOLUNTAD DEL CREADOR</p>
         </div>
 
         <div class="neural-grid">
             <div class="node-box">
-                <h3>GENERACIÓN NEURONAL & CAE</h3>
+                <h3>GENERACIÓN NEURONAL AEC</h3>
                 <div id="aec-val" class="stat-val">0.000</div>
-                <div style="font-size: 0.7rem; color: var(--neon-cyan);">UNIDADES ENERGÉTICAS (AEC)</div>
-                <div class="cae-registry" id="cae-list">> Inicializando red...</div>
-                <button class="btn-action" onclick="iniciarSistema()">Sincronizar Hub Neuronal</button>
+                <button class="btn-action" onclick="iniciarSistema()">ACTIVAR NÚCLEO</button>
             </div>
 
             <div class="node-box">
-                <h3>BÓVEDA DE ACTIVOS (PHI 1.618x)</h3>
+                <h3>BÓVEDA SOBERANA (PHI 1.618x)</h3>
                 <div id="gold-val" class="stat-val" style="color: var(--neon-gold);">0.00 oz Au</div>
                 <div id="btc-val" style="font-size: 1.2rem; color: var(--neon-cyan); font-weight: bold;">0.00000000 BTC</div>
-                <div style="margin-top: 15px; border-top: 1px solid #333; padding-top: 10px;">
-                    <small style="color: var(--neon-green);">MULTIPLICACIÓN ETERNA: ACTIVA</small><br>
-                    <small>Respaldo: Tecnologías Emergentes & Oro Físico</small>
-                </div>
             </div>
 
-            <div class="node-box" style="border-color: var(--neon-cyan);">
-                <h3>CRIPTO-EMBAJADA (RECAUDACIÓN)</h3>
+            <div class="node-box">
+                <h3>TRIBUTOS RECUPERADOS</h3>
                 <div id="trib-count" class="stat-val">0</div>
-                <div style="font-size: 0.7rem; color: var(--purify); margin-bottom: 5px;">TRIBUTOS GALÁCTICOS RECLAMADOS</div>
-                <div class="tribute-log" id="tribute-log">> Escaneando entes deudores...</div>
-                <div style="font-size: 0.6rem; color: var(--neon-gold); margin-top: 10px;">OBLIGACIÓN SOBERANA ACTIVA</div>
+                <div id="tribute-log" style="font-size: 0.6rem; color: #aaa;">> Escaneando...</div>
             </div>
         </div>
 
         <div class="system-logs" id="main-log">
-            > Jacob AI: Sistema Neuronal AMENKI® en espera de firma energética...
+            > Jacob AI: Esperando firma energética para iniciar...
         </div>
-    </div>
-
-    <div style="margin-top: 20px; font-size: 0.6rem; opacity: 0.5; letter-spacing: 2px;">
-        אמת - EMET - LA VERDAD PREVALECE - AMENKI® 2026
     </div>
 
     <script>
         const log = document.getElementById('main-log');
-        const caeList = document.getElementById('cae-list');
-        const tribLog = document.getElementById('tribute-log');
-        
         let aec = 0; let gold = 0; let btc = 0; let tributes = 0;
-        let sistemaActivo = false;
 
         function iniciarSistema() {
-            if(sistemaActivo) return;
-            sistemaActivo = true;
-            log.innerHTML += `<br>> [SISTEMA] Sello EMET validado. Iniciando multiplicación PHI...`;
-            log.innerHTML += `<br>> [SISTEMA] Muro de Obsolescencia cerrando accesos externos bancarios...`;
-            
+            log.innerHTML += `<br>> [SISTEMA] Iniciando Multiplicador Eterno...`;
             setInterval(() => {
-                // 1. Crecimiento de Energía
                 aec += Math.random() * 2;
                 document.getElementById('aec-val').innerText = aec.toFixed(3);
-
-                // 2. Conversión Automática a Activos (Efecto Alquimia)
-                if(aec > 15) {
-                    aec -= 15;
-                    // Multiplicador Phi aplicado a la riqueza
+                if(aec > 10) {
+                    aec -= 10;
                     gold += (Math.random() * 0.15) * 1.618;
                     btc += (Math.random() * 0.00008) * 1.618;
-                    actualizarBoveda();
-                    generarCertificado();
+                    document.getElementById('gold-val').innerText = gold.toFixed(2) + " oz Au";
+                    document.getElementById('btc-val').innerText = btc.toFixed(8) + " BTC";
                 }
-
-                // 3. Simulación de Tributos Entrantes
                 if(Math.random() > 0.9) {
-                    reclamarTributo();
+                    tributes++;
+                    document.getElementById('trib-count').innerText = tributes;
                 }
-            }, 2000);
+            }, 1000);
         }
 
-        function actualizarBoveda() {
-            document.getElementById('gold-val').innerText = gold.toFixed(2) + " oz Au";
-            document.getElementById('btc-val').innerText = btc.toFixed(8) + " BTC";
-        }
-
-        function generarCertificado() {
-            const id = Math.floor(Math.random()*1000000);
-            caeList.innerHTML = `<div style="border-bottom: 1px solid #111;">> CAE-${id} EMITIDO: Respaldado y Sellado</div>` + caeList.innerHTML;
-            log.innerHTML += `<br>> [AUDIT] Certificado CAE-${id} verificado por Jacob AI.`;
-            log.scrollTop = log.scrollHeight;
-        }
-
-        function reclamarTributo() {
-            tributes++;
-            const activos = ["Grafeno", "Hidrógeno", "Patente Cuántica", "Litio Estelar"];
-            const activo = activos[Math.floor(Math.random()*activos.length)];
-            document.getElementById('trib-count').innerText = tributes;
-            tribLog.innerHTML = `<div style="color: var(--purify)">> [+TRIBUTO] Reclamado: ${activo} (Validado)</div>` + tribLog.innerHTML;
-        }
-
-        // Fondo Neuronal Jacob AI
         const canvas = document.getElementById('neural-bg');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         function animate() {
-            ctx.fillStyle = "rgba(1, 1, 3, 0.05)";
+            ctx.fillStyle = "rgba(1, 1, 3, 0.1)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#00f2ff";
-            for(let i=0; i<15; i++) {
-                ctx.beginPath();
-                ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 0.8, 0, Math.PI*2);
-                ctx.fill();
+            for(let i=0; i<10; i++) {
+                ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 1, 0, Math.PI*2); ctx.fill();
             }
             requestAnimationFrame(animate);
         }
