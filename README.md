@@ -2,7 +2,7 @@
 "Sistema Operativo de Código Abierto para Laboratorio de Baterías LiFePO4".
 
 <p align="center">
-  <img src="logo.jpg" width="100%">
+  <img src="Gemini_Generated_Image_ut2oglut2oglut2o.jpg" width="100%">
 </p>
 
 ## 🧠 Proyecto Guiado por IA
