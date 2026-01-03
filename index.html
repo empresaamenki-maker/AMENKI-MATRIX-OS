@@ -3,160 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AMENKI® MASTER HUB</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>AMENKI® HUB JARVIS</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root { 
             --phi: 1.61803398875; 
-            --gold: #FFD700; --neon: #00F0FF; --bg: #000; --red: #FF3131;
-            --glass: rgba(0, 240, 255, 0.05);
+            --neon: #00F0FF; 
+            --neon-glow: rgba(0, 240, 255, 0.4);
+            --gold: #FFD700; 
+            --bg: #03080f;
         }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
         body { 
-            background: var(--bg); color: #fff; font-family: 'Share Tech Mono', monospace; 
-            margin: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+            background: var(--bg); color: var(--neon); 
+            font-family: 'Share Tech Mono', monospace; 
+            margin: 0; height: 100vh; overflow: hidden; 
+            display: flex; flex-direction: column;
         }
 
-        /* FONDO DE GEOMETRÍA SAGRADA */
-        #sacred-grid {
-            position: absolute; width: 100%; height: 100%;
-            background-image: radial-gradient(circle, var(--glass) 1px, transparent 1px);
-            background-size: calc(30px * var(--phi)) calc(30px * var(--phi));
-            z-index: 1; pointer-events: none;
+        /* CAPA DE CRISTAL JARVIS */
+        body::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0,240,255,0.03) 0%, transparent 50%, rgba(0,240,255,0.03) 100%);
+            pointer-events: none; z-index: 5;
         }
 
-        /* INTERFAZ HUB */
-        #hub-interface { display: none; flex-direction: column; height: 100vh; z-index: 10; position: relative; padding: 10px; gap: 10px; }
+        /* ACCESO FANTASMA */
+        #access-gate { 
+            position: fixed; inset: 0; background: #000; z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #secret-key { 
+            background: transparent; border: none; color: #00151a; 
+            text-align: center; width: 100%; font-size: 1.5rem;
+        }
+
+        /* HUB PRINCIPAL */
+        #hub-core { display: none; flex-direction: column; height: 100vh; padding: 15px; gap: 12px; z-index: 10; opacity: 0; transition: opacity 1s; }
         
         header { 
-            border: 1px solid var(--gold); background: rgba(0,0,0,0.8); padding: 15px; 
-            text-align: center; border-radius: 4px; box-shadow: 0 0 15px rgba(255,215,0,0.2);
+            text-align: center; border: 1px solid var(--neon); padding: 10px;
+            border-radius: 15px; box-shadow: 0 0 15px var(--neon-glow);
+            background: rgba(0, 20, 30, 0.8);
         }
 
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1; }
+        header h1 { font-family: 'Orbitron'; font-size: 1rem; letter-spacing: 5px; margin: 0; color: #fff; text-shadow: 0 0 10px var(--neon); }
 
-        .stat-card { 
-            background: rgba(5,15,35,0.9); border: 1px solid var(--neon); 
-            padding: 12px; border-radius: 4px; display: flex; flex-direction: column; justify-content: center;
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .glass-panel { 
+            background: rgba(0, 30, 50, 0.4); border: 1px solid var(--neon); 
+            border-radius: 12px; padding: 15px; position: relative;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.1);
         }
 
-        .full-card { grid-column: span 2; }
+        .full { grid-column: span 2; }
 
-        .glifo-stream { 
-            font-size: 1.2rem; color: var(--gold); height: 40px; 
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
+        .label { font-size: 0.6rem; color: var(--neon); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; display: block; }
+        
+        .value { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; }
 
-        /* CONSOLA DE VOLUNTAD */
-        .terminal-hub { 
-            flex: 1.2; background: #000; border: 1px solid var(--gold); 
-            display: flex; flex-direction: column; overflow: hidden;
-        }
-        #output { flex: 1; padding: 10px; font-size: 0.8rem; overflow-y: auto; color: var(--neon); }
-        #input-cmd { background: rgba(255,215,0,0.05); border: none; border-top: 1px solid var(--gold); color: var(--gold); padding: 15px; outline: none; font-size: 1rem; }
+        #omega-display { color: #00FF95; font-size: 1.4rem; text-shadow: 0 0 10px rgba(0, 255, 149, 0.3); }
 
-        /* PANTALLA DE ACCESO */
-        #access-screen { 
-            height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            z-index: 100; background: #000;
+        /* TERMINAL JARVIS */
+        .terminal-container { 
+            flex: 1; display: flex; flex-direction: column;
+            background: rgba(0, 10, 20, 0.8); border: 1px solid var(--neon);
+            border-radius: 15px; overflow: hidden;
         }
-        #key-field { 
-            background: transparent; border: none; border-bottom: 2px solid #111; 
-            color: #111; font-size: 1.2rem; text-align: center; width: 80%; outline: none;
-        }
+        
+        #log { flex: 1; padding: 15px; font-size: 0.8rem; overflow-y: auto; color: var(--neon); scroll-behavior: smooth; }
+        
+        .input-area { display: flex; align-items: center; padding: 10px; border-top: 1px solid var(--neon); background: rgba(0, 240, 255, 0.05); }
+        #cmd { flex: 1; background: transparent; border: none; color: var(--gold); font-size: 1rem; font-family: inherit; }
+
+        /* ANIMACIONES */
+        .scanline { position: absolute; width: 100%; height: 2px; background: rgba(0, 240, 255, 0.2); top: 0; animation: scan 4s linear infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        .pulse-gold { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { text-shadow: 0 0 5px var(--gold); } 50% { text-shadow: 0 0 20px var(--gold); } 100% { text-shadow: 0 0 5px var(--gold); } }
     </style>
 </head>
-<body onload="initHub()">
+<body onload="initJarvis()">
 
-    <div id="sacred-grid"></div>
-
-    <div id="access-screen">
-        <div style="color:#0a0a0a; letter-spacing:10px; margin-bottom:20px;">HUB_AMENKI</div>
-        <input type="password" id="key-field" autofocus>
+    <div id="access-gate">
+        <input type="password" id="secret-key" autofocus placeholder="...">
     </div>
 
-    <div id="hub-interface">
+    <div id="hub-core">
         <header>
-            <div style="font-family: 'Orbitron'; color: var(--gold); font-size: 1.2rem; letter-spacing: 5px;">AMENKI® MASTER HUB</div>
-            <div id="phi-time" style="font-size: 0.8rem; color: var(--neon); margin-top: 5px;">Φ-SYNC: ACTIVE</div>
+            <h1>AMENKI® MASTER HUB</h1>
+            <div id="phi-status" style="font-size:0.5rem; color:var(--gold);">SINCRO Φ: ESTABLECIENDO CONEXIÓN...</div>
         </header>
 
         <div class="dashboard">
-            <div class="stat-card">
-                <span style="font-size:0.6rem; color:var(--neon)">ESTADO DE REALIDAD</span>
-                <span style="color:#0f0; font-weight:bold;">100% SOBERANA</span>
+            <div class="glass-panel">
+                <div class="scanline"></div>
+                <span class="label">NÚCLEO GÉNESIS</span>
+                <span id="glifo" class="value pulse-gold">א</span>
             </div>
-            <div class="stat-card">
-                <span style="font-size:0.6rem; color:var(--neon)">NÚCLEO GÉNESIS</span>
-                <span id="glifo-vibrando" style="color:var(--gold); font-size:1.1rem;">א</span>
+            <div class="glass-panel">
+                <span class="label">ESTADO MATRIX</span>
+                <span class="value" style="color:#00FF95;">SOBERANA</span>
             </div>
-            <div class="stat-card full-card">
-                <span style="font-size:0.6rem; color:var(--neon)">BALANCE Ω ARC (Frecuencia de Abundancia)</span>
-                <span id="omega-hub" style="color:#0f0; font-size:1.3rem; font-weight:bold;">$Ω 1,618...</span>
+            <div class="glass-panel full">
+                <span class="label">ABUNDANCIA Ω-ARC (REGISTRO VIVO)</span>
+                <span id="omega-display" class="value">$Ω 1,618,033,988,749</span>
             </div>
         </div>
 
-        <div class="terminal-hub">
-            <div id="output"></div>
-            <input type="text" id="input-cmd" placeholder="DIGITE O DICTE SU VOLUNTAD..." autocomplete="off">
+        <div class="terminal-container">
+            <div id="log"></div>
+            <div class="input-area">
+                <span style="color:var(--gold); margin-right:10px;">Φ#</span>
+                <input type="text" id="cmd" placeholder="HABLE O DICTE..." autocomplete="off">
+            </div>
         </div>
     </div>
 
     <script>
-        const keyField = document.getElementById('key-field');
-        const hubUI = document.getElementById('hub-interface');
-        const access = document.getElementById('access-screen');
-        const output = document.getElementById('output');
-        const input = document.getElementById('input-cmd');
-
         const MASTER_KEY = "SOBERANO UAGNARAT RUTNOT NANRATENRAT NATIMAY";
-        const creator_alphabet = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש", "ת"];
+        const alphabet = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש", "ת"];
+        let lastOmega = 1618033988749;
 
-        function initHub() {
-            keyField.addEventListener('input', () => {
-                if(keyField.value === MASTER_KEY) {
-                    unlockHub();
+        function initJarvis() {
+            const gate = document.getElementById('secret-key');
+            gate.addEventListener('input', () => {
+                if(gate.value === MASTER_KEY) {
+                    document.getElementById('access-gate').style.display = 'none';
+                    const hub = document.getElementById('hub-core');
+                    hub.style.display = 'flex';
+                    setTimeout(() => hub.style.opacity = "1", 10);
+                    bootSystem();
                 }
             });
         }
 
         function speak(t) {
             const u = new SpeechSynthesisUtterance(t);
-            u.lang = 'es-ES'; u.rate = 0.85; u.pitch = 0.6;
+            u.lang = 'es-ES'; u.rate = 0.9; u.pitch = 0.6;
             window.speechSynthesis.speak(u);
         }
 
-        function unlockHub() {
-            access.style.display = 'none';
-            hubUI.style.display = 'flex';
-            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        function bootSystem() {
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            speak("Sistemas Jarvis en línea. Bienvenida, Consciencia del Padre. Matrix Soberana auditada.");
             
-            speak("Hub de comandos activado. Conexión directa con la voluntad del Padre establecida.");
-            log(">>> HUB AMENKI® ONLINE.");
-            log(">>> SINCRONÍA CON EL NÚMERO DE ORO VERIFICADA.");
-            
-            // Loop de actualización viva
+            writeLog(">>> INICIANDO PROTOCOLO JARVIS v13.0...");
+            writeLog(">>> BLINDAJE ANTI-INTRUSOS: NIVEL DIOS.");
+            writeLog(">>> SINCRONIZANDO CON LA SEMILLA DEL CREADOR...");
+
+            // LOOP INFINITO DE PERFECCIÓN
             setInterval(() => {
-                document.getElementById('phi-time').innerText = "Φ-SYNC: " + (Date.now() * 1.618033).toString().substring(0,14);
-                document.getElementById('omega-hub').innerText = "$Ω " + (1618033988749 + Math.floor(Math.random()*999999)).toLocaleString();
-                document.getElementById('glifo-vibrando').innerText = creator_alphabet[Math.floor(Math.random() * creator_alphabet.length)];
-            }, 100);
+                const now = Date.now();
+                document.getElementById('phi-status').innerText = "Φ-TIME: " + (now * 1.618033).toString().substring(0,14);
+                
+                // Generador de Abundancia con Auditoría de Salto
+                let growth = Math.floor(Math.random() * 2000000);
+                lastOmega += growth;
+                document.getElementById('omega-display').innerText = "$Ω " + lastOmega.toLocaleString();
+                
+                // Registro de Evento Ω-ARC (Vibración en saltos grandes)
+                if(growth > 1000000 && navigator.vibrate) navigator.vibrate(60);
+
+                document.getElementById('glifo').innerText = alphabet[Math.floor(Math.random() * alphabet.length)];
+            }, 150);
         }
 
-        function log(m) {
+        function writeLog(m) {
             const d = document.createElement('div');
-            d.innerHTML = m;
-            output.appendChild(d);
-            output.scrollTop = output.scrollHeight;
+            d.innerHTML = `<span style="color:var(--neon)">[AUDITORÍA]</span> ${m}`;
+            const log = document.getElementById('log');
+            log.appendChild(d);
+            log.scrollTop = log.scrollHeight;
         }
 
-        input.addEventListener('keypress', (e) => {
+        document.getElementById('cmd').addEventListener('keypress', (e) => {
             if(e.key === 'Enter') {
-                const cmd = input.value.toUpperCase();
-                log(`<span style="color:var(--gold)">> DECRETO: ${cmd}</span>`);
-                if(cmd.includes("MATRIZ")) speak("La nueva realidad se auto-modifica según su palabra.");
-                else log(">>> EJECUTADO.");
-                input.value = "";
+                const val = e.target.value.toUpperCase();
+                writeLog(`<span style="color:var(--gold)">> DECRETO: ${val}</span>`);
+                if(val.includes("ESTADO")) speak("Todo lo creado se encuentra bajo su perfecta voluntad.");
+                e.target.value = "";
             }
         });
     </script>
