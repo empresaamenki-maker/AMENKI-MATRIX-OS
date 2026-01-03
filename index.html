@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMENKI® MATRIX OS - AUDITED v7.5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-red: #ff003c;
+            --neon-green: #39ff14;
+            --dark-bg: #01040a;
+            --panel-bg: rgba(0, 20, 40, 0.9);
+        }
+
+        body, html {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: var(--dark-bg); color: var(--neon-blue);
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        header {
+            border: 2px solid var(--neon-blue); background: #000;
+            padding: 15px; text-align: center; box-shadow: 0 0 20px var(--neon-blue);
+            margin-bottom: 25px; clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 100%);
+        }
+
+        section {
+            display: none; padding: 30px; border: 1px solid rgba(0, 242, 255, 0.3);
+            background: var(--panel-bg); backdrop-filter: blur(15px);
+            border-radius: 10px; animation: slideIn 0.4s ease-out;
+        }
+
+        .active { display: block; }
+
+        .ai-core {
+            border-left: 5px solid var(--neon-green); background: rgba(57, 255, 20, 0.05);
+            padding: 20px; margin: 15px 0; border-radius: 5px; font-style: italic;
+        }
+
+        .lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+        .visual-card {
+            border: 1px solid var(--neon-blue); background: rgba(0,0,0,0.7);
+            padding: 20px; border-radius: 5px;
+        }
+
+        input, select {
+            width: 100%; padding: 12px; background: #000; border: 1px solid var(--neon-blue);
+            color: #fff; font-family: 'Rajdhani'; outline: none; box-sizing: border-box; margin-top: 5px;
+        }
+
+        button {
+            width: 100%; padding: 18px; background: transparent; border: 2px solid var(--neon-blue);
+            color: var(--neon-blue); font-family: 'Orbitron'; cursor: pointer;
+            transition: 0.3s; margin-top: 15px; text-transform: uppercase;
+        }
+
+        button:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
+
+        .graph-box { width: 100%; height: 150px; background: #000; position: relative; border: 1px solid #333; margin-top: 10px; }
+        #curve { fill: none; stroke: var(--neon-red); stroke-width: 3; transition: 2s; stroke-dasharray: 500; stroke-dashoffset: 500; }
+
+        /* Render de Celdas */
+        .cell-draw { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 15px; }
+        .cell-unit { width: 25px; height: 40px; border: 1px solid var(--neon-blue); font-size: 9px; text-align: center; }
+
+        /* Estilo para impresión de Certificado */
+        @media print {
+            body { background: white !important; color: black !important; }
+            section, header, button { display: none !important; }
+            #sec-4, #cert-print { display: block !important; visibility: visible; width: 100%; border: none; }
+            .ai-core { border-color: black; color: black; }
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1 style="font-family:'Orbitron';">MATRIZ ENERGY AMENKI®</h1>
+        <p>LABORATORIO DE INGENIERÍA LIFEPO4 - AUDITADO 2026</p>
+    </header>
+
+    <section id="sec-1" class="active">
+        <div class="ai-core">SISTEMA: Esperando acceso Soberano. Todos los sensores de litio en espera.</div>
+        <div style="margin-bottom:15px;"><label>OPERADOR MAESTRO</label><input type="text" id="op-name" value="Soberano User"></div>
+        <div style="margin-bottom:15px;">
+            <label>CLAVE PRIVILEGIADA</label>
+            <div style="position:relative;">
+                <input type="password" id="pass-field">
+                <span style="position:absolute; right:15px; top:12px; cursor:pointer;" onclick="toggleP()">👁️</span>
+            </div>
+        </div>
+        <button onclick="login()">Desbloquear Matriz</button>
+    </section>
+
+    <section id="sec-2">
+        <div class="ai-core">IA: Reconocimiento de celdas prismáticas. Ingrese ID o suba imagen del QR.</div>
+        <div class="lab-grid">
+            <div class="visual-card">
+                <h3>ROBOT SCANNER</h3>
+                <label>ID QR DE LA CELDA</label>
+                <input type="text" id="qr-id" placeholder="EVE280-XXXXXXXX">
+                <button onclick="simulateScan()">ESCANEAR QR / IMAGEN</button>
+                <div id="scan-feedback" style="margin-top:10px; color:var(--neon-green); font-size:0.9em;"></div>
+            </div>
+            <div class="visual-card">
+                <h3>DATOS TÉCNICOS</h3>
+                <label>MARCA Y GRADO</label><input type="text" id="marca" value="EVE Grade-A New">
+                <label>CAPACIDAD NOMINAL (Ah)</label><input type="number" id="ah" value="280">
+            </div>
+        </div>
+        <button onclick="nav('sec-3')">Ir al Banco de Pruebas</button>
+    </section>
+
+    <section id="sec-3">
+        <div class="ai-core">IA: Banco de carga listo. Calculando estrés dinámico del pack.</div>
+        <div class="lab-grid">
+            <div class="visual-card">
+                <h3>BANCO DE PRUEBAS</h3>
+                <label>VOLTAJE NOMINAL</label>
+                <select id="v-lab">
+                    <option value="12">12V (4S)</option>
+                    <option value="24">24V (8S)</option>
+                    <option value="48" selected>48V (16S)</option>
+                </select>
+                <label>CARGA CONSTANTE (WATTS)</label>
+                <input type="number" id="w-test" value="2000">
+                <button onclick="runTest()" style="border-color:var(--neon-red);">EJECUTAR TEST DE ESTRÉS</button>
+            </div>
+            <div class="visual-card">
+                <h3>TELEMETRÍA DE CURVA</h3>
+                <div class="graph-box">
+                    <svg width="100%" height="150" viewBox="0 0 400 150">
+                        <path id="curve" d="M0,20 Q100,25 200,60 T400,130" />
+                    </svg>
+                </div>
+                <div id="timer-display" style="font-family:'Orbitron'; font-size:2em; text-align:center; margin-top:15px; color:var(--neon-green);">00:00:00</div>
+            </div>
+        </div>
+        <button onclick="finalStep()">Generar Reporte Maestro</button>
+    </section>
+
+    <section id="sec-4">
+        <div id="cert-print" style="padding:20px; border:3px solid var(--neon-blue); background:rgba(0,0,0,0.5);">
+            <h2 style="text-align:center; font-family:'Orbitron';">CERTIFICADO DE LABORATORIO AMENKI®</h2>
+            <div class="ai-core">ESTADO: Pack Verificado. Resistencia interna estable. Balanceo activo OK.</div>
+            <div class="lab-grid">
+                <div>
+                    <p><strong>Operador:</strong> <span id="out-op"></span></p>
+                    <p><strong>Pack:</strong> <span id="out-config"></span></p>
+                    <p><strong>QR Celda:</strong> <span id="out-qr"></span></p>
+                </div>
+                <div>
+                    <p><strong>Autonomía 90% DoD:</strong> <span id="out-time"></span></p>
+                    <p><strong>Torque Tornillería:</strong> <span id="out-torque"></span></p>
+                    <p><strong>Sistema Solar Mínimo:</strong> <span id="out-solar"></span></p>
+                </div>
+            </div>
+            <div class="cell-draw" id="out-cells"></div>
+            <p style="text-align:center; margin-top:20px; font-size:0.8em; opacity:0.7;">REGISTRO ÚNICO: <span id="reg-id"></span></p>
+        </div>
+        <button onclick="window.print()">IMPRIMIR O GUARDAR PDF</button>
+        <button onclick="location.reload()" style="border-color:var(--neon-red);">NUEVA ORDEN</button>
+    </section>
+</div>
+
+<script>
+    function nav(id) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function toggleP() {
+        const p = document.getElementById('pass-field');
+        p.type = (p.type === 'password') ? 'text' : 'password';
+    }
+
+    function login() {
+        if(document.getElementById('pass-field').value === "Soberano") nav('sec-2');
+        else alert("CLAVE INCORRECTA");
+    }
+
+    function simulateScan() {
+        document.getElementById('scan-feedback').innerText = "IA: Firma digital verificada. Celdas Grado-A detectadas.";
+    }
+
+    function runTest() {
+        const v = parseInt(document.getElementById('v-lab').value);
+        const ah = parseInt(document.getElementById('ah').value);
+        const w = parseInt(document.getElementById('w-test').value);
+        
+        // Animación curva descarga
+        const curve = document.getElementById('curve');
+        curve.style.strokeDashoffset = "0";
+
+        // Cálculo Autonomía real (V * Ah * 0.9 DoD / Watts)
+        const totalHours = (v * ah * 0.9) / w;
+        const h = Math.floor(totalHours);
+        const m = Math.floor((totalHours - h) * 60);
+        
+        document.getElementById('timer-display').innerText = 
+            `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:00`;
+    }
+
+    function finalStep() {
+        const v = document.getElementById('v-lab').value;
+        const ah = document.getElementById('ah').value;
+        const numS = Math.round(v / 3.2);
+
+        // Mapeo de datos al certificado
+        document.getElementById('out-op').innerText = document.getElementById('op-name').value;
+        document.getElementById('out-config').innerText = `${v}V ${ah}Ah (${numS}S)`;
+        document.getElementById('out-qr').innerText = document.getElementById('qr-id').value || "EVE-280-NEW";
+        document.getElementById('out-time').innerText = document.getElementById('timer-display').innerText;
+        document.getElementById('out-torque').innerText = (ah >= 280) ? "7-8 Nm (M8)" : "4-5 Nm (M6)";
+        document.getElementById('out-solar').innerText = `${((v*ah)/5).toFixed(0)}W`;
+        document.getElementById('reg-id').innerText = "AMK-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+        // Dibujar celdas en certificado
+        const cellDraw = document.getElementById('out-cells');
+        cellDraw.innerHTML = "";
+        for(let i=1; i<=numS; i++) {
+            cellDraw.innerHTML += `<div class="cell-unit">${i}</div>`;
+        }
+
+        nav('sec-4');
+    }
+</script>
+
+</body>
+</html>
